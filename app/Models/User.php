@@ -53,7 +53,7 @@ class User extends Authenticatable
     }
 
     public function firmas(){
-        return $this->belongsToMany('App\Models\Peticione');
+        return $this->belongsToMany('App\Models\Peticione', 'peticione_user')->withTimestamps();
     }
 
     public function categorias(){

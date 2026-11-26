@@ -33,8 +33,7 @@
     <!-- CABECERA DE LA PETICIÓN -->
     <header>
         <div class="hero-detalle">
-            {{-- Imagen provisional hasta tener el modelo File --}}
-            <img src="{{ asset('img/detalleVictimaViolencia.webp') }}" class="w-100" alt="{{ $peticione->titulo }}">
+            <img src="{{ $peticione->imagen_url }}" class="card-img-top" alt="{{ $peticione->titulo }}">
             <div class="hero-texto">
                 <div class="linea-roja"></div>
                 <h1>{{ $peticione->titulo }}</h1>
@@ -67,9 +66,15 @@
                         <label for="correo" class="form-label small mb-1">Correo electrónico</label>
                         <input type="email" class="form-control mb-4" id="correo" value="{{ Auth::user()->email }}" disabled>
 
-                        <button type="submit" class="btn boton-firma w-100 fw-bold fs-5">
-                            <i class="bi bi-pen"></i> Firma la petición
-                        </button>
+                        @if ($yaFirmada ?? false)
+                            <button type="button" class="btn btn-secondary w-100 fw-bold fs-5" disabled>
+                                <i class="bi bi-check-lg"></i> Ya has firmado
+                            </button>
+                        @else
+                            <button type="submit" class="btn boton-firma w-100 fw-bold fs-5">
+                                <i class="bi bi-pen"></i> Firma la petición
+                            </button>
+                        @endif
                         <p class="pequeno mt-3 mb-0">
                             Procesamos tus datos personales de acuerdo con nuestra
                             <a href="#" class="text-dark">Política de privacidad</a> y los
@@ -231,7 +236,7 @@
         </div>
     </section>
 
-    <!-- OTRAS PETICIONES (-->
+    <!-- OTRAS PETICIONES-->
     @if (!empty($otras) && $otras->count())
         <section class="mt-5" id="populares">
             <hr class="mb-4">
@@ -242,7 +247,7 @@
                         <div class="card h-100 tarjeta-pet">
                             <div class="position-relative">
                                 <a href="{{ route('peticiones.show', $otra->id) }}">
-                                    <img src="{{ asset('img/peticionPaliativos.webp') }}" class="card-img-top" alt="{{ $otra->titulo }}">
+                                    <img src="{{ $otra->imagen_url }}" class="card-img-top" alt="{{ $otra->titulo }}">
                                 </a>
                                 <a href="{{ route('peticiones.show', $otra->id) }}" class="flecha-card d-none d-md-flex">
                                     <i class="bi bi-arrow-right"></i>
@@ -265,7 +270,6 @@
     @endif
 
     <!-- VICTORIAS -->
-
     <section class="mt-4">
         <hr class="mb-4">
         <h2 class="titulo-seccion mb-4">Victorias</h2>
@@ -288,7 +292,7 @@
         </div>
     </section>
 
-    <!-- BARRA FIJA DE FIRMA (solo móvil) -->
+    <!-- BARRA FIJA DE FIRMA (solo en móvil) -->
     <div id="barraFirma" class="barra-firma">
         <a href="#firmar" class="btn boton-apoyar w-100 mb-2"><i class="bi bi-hand-thumbs-up"></i> Apoyar ahora</a>
         <a href="#firmar" class="btn boton-firma w-100 fw-bold fs-5"><i class="bi bi-pen"></i> Firma la petición</a>

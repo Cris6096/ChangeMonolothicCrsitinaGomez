@@ -22,4 +22,18 @@ class Peticione extends Model
         return $this->belongsToMany('App\Models\User');
     }
 
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
+    public function getImagenUrlAttribute()
+    {
+        $file = $this->files->first();
+
+        return $file
+            ? asset('storage/' . $file->file_path)
+            : asset('img/peticionPaliativos.webp');
+    }
+
 }

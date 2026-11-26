@@ -44,8 +44,4 @@ class CategoriaController extends Controller
      return response()->json(['messaje'=>'Peticiones De Categoria Encontrada','data'=>$cantidad, $peticiones], 202);
     }
 }
-// ALGUNOS MÉTODOS
-/*
- * sum() count() avg() get() associate() dissociate() attach() detach()
- *  */
 

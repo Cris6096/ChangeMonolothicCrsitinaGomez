@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -43,6 +44,16 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $peticiones = $user->peticiones()->get();
         return response()->json(['message' => 'Peticiones de Usuarios Encontrados', 'data' => $peticiones], 202);
+    }
+
+    public function peticionesFirmadas(Request $request)
+    {
+        $id = Auth::id();
+        $usuario = User::findOrFail($id);
+        $peticiones = $usuario->firmas()->with(['user', 'categoria', 'files'])->get();
+        $titulo = 'Peticiones que has firmado';
+
+        return view('peticiones.index', compact('peticiones', 'titulo'));
     }
 
 

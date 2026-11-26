@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql mbstring zip gd bcmath
 
 RUN a2enmod rewrite
+RUN printf "upload_max_filesize=6M\npost_max_size=8M\n" > /usr/local/etc/php/conf.d/uploads.ini
 
 # Laravel sirve desde /public
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public

@@ -20,20 +20,23 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::get('/users/firmas', [UserController::class, 'peticionesFirmadas'])->middleware('auth');
+Route::get('/users/firmas', [UserController::class, 'peticionesFirmadas'])->name('users.firmas')->middleware('auth');
 
 Route::controller(PeticioneController::class)->group(function () {
+    // Públicas
     Route::get('peticiones/index', 'index')->name('peticiones.index');
-    Route::get('mispeticiones', 'listMine')->name('peticiones.mine');
-    Route::get('peticionesfirmadas', 'peticionesFirmadas')->name('peticiones.peticionesfirmadas');
-
     Route::get('peticiones/{id}', 'show')->name('peticiones.show');
-    Route::get('peticion/add', 'create')->name('peticiones.create');
-    Route::post('peticion', 'store')->name('peticiones.store');
-    Route::delete('peticiones/{id}', 'delete')->name('peticiones.delete');
-    Route::put('peticiones/{id}', 'update')->name('peticiones.update');
-    Route::post('peticiones/firmar/{id}', 'firmar')->name('peticiones.firmar');
-    Route::get('peticiones/edit/{id}', 'edit')->name('peticiones.edit'); // Apuntando a 'edit'
+
+    // Requieren sesión iniciada
+    Route::middleware('auth')->group(function () {
+        Route::get('mispeticiones', 'listMine')->name('peticiones.mine');
+        Route::get('peticion/add', 'create')->name('peticiones.create');
+        Route::post('peticion', 'store')->name('peticiones.store');
+        Route::delete('peticiones/{id}', 'delete')->name('peticiones.delete');
+        Route::put('peticiones/{id}', 'update')->name('peticiones.update');
+        Route::post('peticiones/firmar/{id}', 'firmar')->name('peticiones.firmar');
+        Route::get('peticiones/edit/{id}', 'edit')->name('peticiones.edit');
+    });
 });
 
 

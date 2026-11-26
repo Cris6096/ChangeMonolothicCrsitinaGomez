@@ -50,7 +50,7 @@
         </div>
     </section>
 
-    <!-- TEMAS (desde la tabla categorias) -->
+    <!-- TEMAS (categorias_bd) -->
     @if (!empty($categorias) && $categorias->count())
         <section class="mt-5">
             <h2 class="h4 fw-bold mb-3">Temas</h2>
@@ -62,46 +62,6 @@
         </section>
     @endif
 
-    <!-- MIS PETICIONES -->
-    <section class="mt-5">
-        <h2 class="h4 fw-bold mb-4">Mis peticiones</h2>
-
-        @auth
-            <div class="row">
-                @forelse ($misPeticiones as $miPeticion)
-                    <div class="col-12 col-md-6 col-lg-3 mb-4">
-                        <div class="card h-100 tarjeta-pet">
-                            <a href="{{ route('peticiones.show', $miPeticion->id) }}">
-                                {{-- Imagen provisional hasta tener el modelo File --}}
-                                <img src="{{ asset('img/peticionPaliativos.webp') }}" class="card-img-top" alt="{{ $miPeticion->titulo }}">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="titulo-pet">{{ $miPeticion->titulo }}</h5>
-                                <p class="text-muted small mb-2">{{ $miPeticion->categoria?->nombre }}</p>
-                                <p class="firmas mb-0"><i class="bi bi-pen"></i> {{ $miPeticion->firmantes }} firmas</p>
-                            </div>
-                            <div class="card-footer bg-white border-0">
-                                <a href="{{ route('peticiones.show', $miPeticion->id) }}"
-                                   class="btn btn-outline-secondary text-dark fw-bold w-100">Ver petición</a>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="col-12">
-                        <div class="alert alert-light border text-center">
-                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
-                            No tienes ninguna petición creada todavía.
-                        </div>
-                    </div>
-                @endforelse
-            </div>
-        @else
-            <div class="alert alert-light border text-center">
-                Inicia sesión para ver tus peticiones.
-            </div>
-        @endauth
-    </section>
-
     <!-- PETICIONES DE OTROS USUARIOS -->
     <section class="mt-5">
         <h2 class="h4 fw-bold mb-4">Peticiones patrocinadas por otros usuarios de Change.org</h2>
@@ -111,9 +71,7 @@
                     <div class="card h-100 tarjeta-pet">
                         <div class="position-relative">
                             <a href="{{ route('peticiones.show', $peticion->id) }}">
-                                {{-- Imagen provisional hasta tener el modelo File --}}
-                                <img src="{{ asset('img/peticionPaliativos.webp') }}" class="card-img-top" alt="{{ $peticion->titulo }}">
-                            </a>
+                                <img src="{{ $peticion->imagen_url }}" class="card-img-top" alt="{{ $peticion->titulo }}">                            </a>
                             <a href="{{ route('peticiones.show', $peticion->id) }}" class="flecha-card d-none d-md-flex">
                                 <i class="bi bi-arrow-right"></i>
                             </a>

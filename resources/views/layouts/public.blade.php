@@ -24,12 +24,13 @@
             </button>
         </div>
 
+
         <div class="collapse navbar-collapse" id="menu">
             <ul class="navbar-nav me-auto ms-lg-4">
                 <li class="nav-item"><a class="nav-link fw-bold" href="{{ route('peticiones.index') }}">Peticiones</a></li>
                 @auth
                     <li class="nav-item"><a class="nav-link fw-bold" href="{{ route('peticiones.mine') }}">Mis peticiones</a></li>
-                    <li class="nav-item"><a class="nav-link fw-bold" href="{{ route('peticiones.peticionesfirmadas') }}">Mis firmas</a></li>
+                    <li class="nav-item"><a class="nav-link fw-bold" href="{{ route('users.firmas') }}">Mis firmas</a></li>
                 @endauth
                 <li class="nav-item"><a class="nav-link fw-bold" href="#">Programa de socios/as</a></li>
                 <li class="nav-item"><a class="nav-link fw-bold" href="#">Buscar</a></li>
