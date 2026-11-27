@@ -3,9 +3,6 @@
 @section('title', 'Change.org - Peticiones')
 
 @section('content')
-    @if (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
 
     <!-- BUSCADOR -->
     <header class="mt-2 text-md-center">
@@ -94,8 +91,8 @@
         </div>
 
         @if ($peticiones instanceof \Illuminate\Pagination\LengthAwarePaginator)
-            <div class="d-flex justify-content-center">
-                {{ $peticiones->links() }}
+            <div class="d-flex justify-content-center mt-4">
+                {{ $peticiones->onEachSide(1)->links('pagination::bootstrap-4') }}
             </div>
         @endif
     </section>

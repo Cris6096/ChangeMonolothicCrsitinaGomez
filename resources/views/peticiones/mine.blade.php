@@ -3,14 +3,7 @@
 @section('title', 'Change.org - Mis peticiones')
 
 @section('content')
-    @if (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    <!-- CABECERA -->
+        <!-- CABECERA -->
     <header class="mt-2 text-md-center">
         <h1 class="titulo-peticiones">Mis peticiones</h1>
     </header>
@@ -66,8 +59,8 @@
             @endforelse
         </div>
 
-        <div class="d-flex justify-content-center">
-            {{ $peticiones->links() }}
+        <div class="d-flex justify-content-center mt-4">
+            {{ $peticiones->onEachSide(1)->links('pagination::bootstrap-4') }}
         </div>
     </section>
 @endsection

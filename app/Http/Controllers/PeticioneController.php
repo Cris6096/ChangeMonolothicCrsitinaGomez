@@ -18,7 +18,7 @@ class PeticioneController extends Controller
 
     public function index()
     {
-        $peticiones = Peticione::with(['user', 'categoria', 'files'])->paginate(8);
+        $peticiones = Peticione::with(['user', 'categoria', 'files'])->paginate(2);
         $categorias = Categoria::all();
 
         return view('peticiones.index', compact('peticiones', 'categorias'));
@@ -100,8 +100,10 @@ class PeticioneController extends Controller
             return false;
         }
 
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('peticiones', $filename, 'public'); // storage/app/public/peticiones
+        $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+            . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('peticiones'), $filename);
+        $filePath = 'peticiones/' . $filename; // storage/app/public/peticiones
 
         $fileModel = new File;
         $fileModel->peticione_id = $peticione_id;
