@@ -39,6 +39,12 @@
 
     <!-- CREACION / EDICION DE PETICION -->
     <main class="container my-4">
+        {{-- Errores técnicos (flash) --}}
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
+        {{-- Errores funcionales (validación) --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
@@ -62,7 +68,10 @@
                         <div class="col-12 col-lg-8 offset-lg-2">
                             <div class="linea-roja"></div>
                             <label for="titulo" class="text-white small mb-1">Título</label>
-                            <textarea class="form-control campo-titulo" id="titulo" name="titulo" placeholder="Tu título único" required>{{ old('titulo', $peticione->titulo ?? '') }}</textarea>
+                            <textarea class="form-control campo-titulo @error('titulo') is-invalid @enderror" id="titulo" name="titulo" placeholder="Tu título único" required>{{ old('titulo', $peticione->titulo ?? '') }}</textarea>
+                            @error('titulo')
+                            <div class="text-warning small mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -70,28 +79,40 @@
                 <div class="bloque-blanco">
                     <div class="row">
                         <div class="col-12 col-lg-8 offset-lg-2">
-                            <div class="d-flex gap-2 mb-4">
-                                <div class="d-flex gap-2 mb-4">
-                                    <button type="button" class="btn btn-outline-secondary fw-bold flex-fill flex-md-grow-0" disabled><i class="bi bi-image"></i> Crear imagen</button>
-                                    <input type="file" id="file" name="file" accept="image/*" class="d-none">
-                                    <button type="button" id="botonFoto" class="btn btn-outline-dark fw-bold flex-fill flex-md-grow-0"><i class="bi bi-upload"></i> Usar mi foto</button>
-                                    <small id="nombreArchivo" class="text-muted align-self-center"></small>
-                                </div>
+                            <div class="d-flex gap-2 mb-2">
+                                <button type="button" class="btn btn-outline-secondary fw-bold flex-fill flex-md-grow-0" disabled><i class="bi bi-image"></i> Crear imagen</button>
+                                <input type="file" id="file" name="file" accept="image/*" class="d-none">
+                                <button type="button" id="botonFoto" class="btn btn-outline-dark fw-bold flex-fill flex-md-grow-0"><i class="bi bi-upload"></i> Usar mi foto</button>
+                                <small id="nombreArchivo" class="text-muted align-self-center"></small>
                             </div>
+                            @error('file')
+                            <div class="text-danger small mb-2">{{ $message }}</div>
+                            @enderror
+                            <div class="mb-4"></div>
+
                             <h2 class="fw-bold">La causa</h2>
                             <label for="causa" class="visually-hidden">Describe la causa de tu petición</label>
-                            <textarea class="form-control" id="causa" name="descripcion" rows="8" placeholder="Explica por qué es importante esta petición..." required>{{ old('descripcion', $peticione->descripcion ?? '') }}</textarea>
+                            <textarea class="form-control @error('descripcion') is-invalid @enderror" id="causa" name="descripcion" rows="8" placeholder="Explica por qué es importante esta petición..." required>{{ old('descripcion', $peticione->descripcion ?? '') }}</textarea>
+                            @error('descripcion')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
 
                             <label for="destinatario" class="form-label fw-bold mt-4">Destinatario</label>
-                            <input type="text" class="form-control" id="destinatario" name="destinatario" value="{{ old('destinatario', $peticione->destinatario ?? '') }}" required>
+                            <input type="text" class="form-control @error('destinatario') is-invalid @enderror" id="destinatario" name="destinatario" value="{{ old('destinatario', $peticione->destinatario ?? '') }}" required>
+                            @error('destinatario')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
 
                             <label for="categoria_id" class="form-label fw-bold mt-4">Tema</label>
-                            <select class="form-select" id="categoria_id" name="categoria_id" required>
+                            <select class="form-select @error('categoria_id') is-invalid @enderror" id="categoria_id" name="categoria_id" required>
                                 <option value="" disabled @selected(!old('categoria_id', $peticione->categoria_id ?? null))>Elige un tema</option>
                                 @foreach ($categorias as $categoria)
                                     <option value="{{ $categoria->id }}" @selected(old('categoria_id', $peticione->categoria_id ?? null) == $categoria->id)>{{ $categoria->nombre }}</option>
                                 @endforeach
                             </select>
+                            @error('categoria_id')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -219,7 +240,6 @@
             document.getElementById('categoria_id')
         ];
         const formularioValido = camposIniciales.every((campo) => campo.reportValidity());
-
 
         if (formularioValido && !editando && !inputFile.files.length) {
             nombreArchivo.textContent = 'Selecciona una imagen';

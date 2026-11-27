@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -48,12 +49,17 @@ class UserController extends Controller
 
     public function peticionesFirmadas(Request $request)
     {
-        $id = Auth::id();
-        $usuario = User::findOrFail($id);
-        $peticiones = $usuario->firmas()->with(['user', 'categoria', 'files'])->get();
-        $titulo = 'Peticiones que has firmado';
+        try {
+            $id = Auth::id();
+            $usuario = User::findOrFail($id);
+            $peticiones = $usuario->firmas()->with(['user', 'categoria', 'files'])->paginate(8);
+            $categorias = Categoria::all();
+            $titulo = 'Peticiones que has firmado';
+        } catch (\Exception $exception) {
+            return redirect()->route('peticiones.index')->with('error', $exception->getMessage());
+        }
 
-        return view('peticiones.index', compact('peticiones', 'titulo'));
+        return view('peticiones.index', compact('peticiones', 'categorias', 'titulo'));
     }
 
 

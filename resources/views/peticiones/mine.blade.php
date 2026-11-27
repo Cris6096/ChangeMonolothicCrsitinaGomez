@@ -20,11 +20,10 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="h4 fw-bold mb-0">
                 Tus peticiones
-                @if ($peticiones->count())
-                    <span class="text-muted fw-normal">({{ $peticiones->count() }})</span>
+                @if ($peticiones->total())
+                    <span class="text-muted fw-normal">({{ $peticiones->total() }})</span>
                 @endif
             </h2>
-
         </div>
 
         <div class="row">
@@ -33,7 +32,8 @@
                     <div class="card h-100 tarjeta-pet">
                         <div class="position-relative">
                             <a href="{{ route('peticiones.show', $peticion->id) }}">
-                                <img src="{{ $peticion->imagen_url }}" class="card-img-top" alt="{{ $peticion->titulo }}">                            </a>
+                                <img src="{{ $peticion->imagen_url }}" class="card-img-top" alt="{{ $peticion->titulo }}">
+                            </a>
                             <a href="{{ route('peticiones.show', $peticion->id) }}" class="flecha-card d-none d-md-flex">
                                 <i class="bi bi-arrow-right"></i>
                             </a>
@@ -64,6 +64,10 @@
                     </div>
                 </div>
             @endforelse
+        </div>
+
+        <div class="d-flex justify-content-center">
+            {{ $peticiones->links() }}
         </div>
     </section>
 @endsection

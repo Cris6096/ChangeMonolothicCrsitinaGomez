@@ -43,7 +43,7 @@ class PeticioneController extends Controller
     {
         try {
             $user_id = Auth::user()->id;
-            $peticiones = Peticione::with(['categoria', 'files'])->where('user_id', $user_id)->get();
+            $peticiones = Peticione::with(['categoria', 'files'])->where('user_id', $user_id)->paginate(8);
         } catch (\Exception $exception) {
             return back()->withError($exception->getMessage())->withInput();
         }
